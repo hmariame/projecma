@@ -1,0 +1,38 @@
+#!/bin/bash
+          #author:mariame
+          #date: fev/2023
+# Script to Install Jenkins On Centos 7 #
+
+echo "installing software package that jerkins needs to work correctly (dependencies)"
+yum install -y epel-release
+echo " openning  the port for Jenkins"
+firewall-cmd --permanent --zone=public --add-port=8080/tcp
+echo "reloading  the port for Jenkins"
+firewall-cmd --reload
+echo " disabling SELinux for more security(if required )"
+sed -i ‘s/SELINUX=enforcing/SELINUX-disabled/g’ /etc/selinux/config
+echo " rebooting machine"
+shutdwon -r now
+echo " installing Java on in the system"
+yum install java-11-openjdk-devel -y
+echo " After Dependencies installed now Jenkins will be installed before that enabling the Jenkins repository"
+curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
+rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+echo " installing Jenkins On Centos 7"
+yum install jenkins -y
+echo "After the installation process is completed, starting and enabling the service"
+systemctl start jenkins
+systemctl enable jenkins
+echo "Checking the jenkins status "
+systemctl status jenkins
+echo "now openning the jenkins page from your browser and navigating to"
+http://your_ip_or_domain:8080
+echo "Coping and pasting the administrator password"
+cat /var/lib/jenkins/secrets/initialAdminPassword
+echo "Then clicking on Continue, unlocking and 
+starting accessing jenkins. After that installing 
+suggested plugins,creating first admin user"
+echo "creation of your first admin user,
+setting URL for the Jenkins instance configuration.
+Finally  starting using Jenkins button"
+ echo "Thank you"
